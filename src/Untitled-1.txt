@@ -1,0 +1,7 @@
+for check answer (quizId, answer);
+quiz = quizzes[quizId]
+ans = if quiz -> quiz.include = answer
+
+all selected or not
+
+
