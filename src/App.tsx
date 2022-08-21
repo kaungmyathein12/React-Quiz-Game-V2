@@ -5,12 +5,13 @@ import CheckAnswer from "./components/CheckAnswer";
 import Quiz from "./components/Quiz";
 
 const App: React.FC = () => {
+  const [btn, setBtn] = useState<string>("Check Answer");
   const [quizes, setQuizes] = useState([]);
   const [selectAns, setSelectAns] = useState<any>([]);
-  const [total, setTotal] = useState<any>({ total: undefined });
-  const [answers, setAnswers] = useState<[]>([]);
+  const [total, setTotal] = useState<number | null>(null);
+
   const checkAnswer = () => {
-    let marks = 0;
+    setTotal(() => 0);
     let checkArrayAreEqual;
     const selectQuizIdList = selectAns.map(
       (selectAns: any) => selectAns.quizId
@@ -25,24 +26,15 @@ const App: React.FC = () => {
     }
     if (checkArrayAreEqual) {
       const correctAnswer = quizes.map((el: any) => el.correctAnswer);
-      const selectedQuizAns = selectAns
-        .sort((a: any, b: any) => a.quizId - b.quizId)
-        .map((selectAns: any) => selectAns.ans);
-      for (let i = 0; i < correctAnswer.length; i++) {
-        if (correctAnswer[i] === selectedQuizAns[i]) {
-          marks = marks + 1;
-        } else {
-          if (marks === 0) {
-            marks = marks - 1;
-          } else if (marks < 0) {
-            marks = 0;
-          }
+      const selectedAns = selectAns.map((el: any) => el.ans);
+      selectedAns.forEach((ans: any) => {
+        const final = correctAnswer.includes(ans);
+        if (final) {
+          setTotal((prevtotal: any) => prevtotal + 1);
         }
-      }
-      setTotal((prevState: any) => {
-        return { ...prevState, total: marks };
       });
     }
+    setBtn(() => "Restart Game");
   };
   const toggleActive = (quizId: number, ans: string) => {
     const hadObj = selectAns.find(
@@ -72,20 +64,18 @@ const App: React.FC = () => {
       console.log("Error", error);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
   return (
     <div id="App" className="font-poppins w-4/5 mx-auto py-5">
       <h1 className="text-xl font-semibold mt-4 mb-10">React Quiz Game</h1>
-      <Quiz
-        quizzes={quizes}
-        toggleActive={toggleActive}
-        selectAns={selectAns}
-      />
+      <Quiz quizes={quizes} toggleActive={toggleActive} selectAns={selectAns} />
       <CheckAnswer
+        btn={btn}
         checkAns={checkAnswer}
-        marks={total.total}
+        marks={total}
         quizesLength={quizes.length}
       />
     </div>

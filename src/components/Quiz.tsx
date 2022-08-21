@@ -3,7 +3,7 @@ import Answer from "./Answer";
 import Question from "./Question";
 
 interface QuizProps {
-  quizzes: {
+  quizes: {
     id: number;
     question: string;
     answers: string[];
@@ -13,7 +13,7 @@ interface QuizProps {
   toggleActive: (quizid: number, ans: string) => void;
 }
 const Quiz: React.FC<QuizProps> = (props) => {
-  const generateQuiz = props.quizzes.map((quiz) => {
+  const generateQuiz = props.quizes.map((quiz) => {
     const newAnswers = quiz.answers.sort();
     return (
       <div key={quiz.id} className="mb-8">
