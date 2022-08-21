@@ -9,7 +9,7 @@ const App: React.FC = () => {
   const [quizes, setQuizes] = useState([]);
   const [selectAns, setSelectAns] = useState<any>([]);
   const [total, setTotal] = useState<number>(0);
-  const [totalBox, setTotalBox] = useState<boolean>(false);
+  const [totalBox, setTotalBox] = useState<boolean>(true);
 
   const checkAnswer = () => {
     let checkArrayAreEqual;

@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+
 interface Props {
   quizes: any;
   marks: number;
@@ -5,13 +7,16 @@ interface Props {
 const Total: React.FC<Props> = (props) => {
   const correctAns = props.quizes.map((el: any) => el.correctAnswer);
   const correctBtn = correctAns.map((ans: string) => (
-    <button className="px-4 py-1 rounded-md font-medium mb-2 text-start border bg-white">
+    <button
+      key={nanoid()}
+      className="px-4 py-1 rounded-md font-medium mb-2 text-start border bg-white"
+    >
       {ans}
     </button>
   ));
   return (
     <div className="absolute inset-0 bg-black bg-opacity-60 grid place-items-center">
-      <div className=" w-4/12 px-5 py-8 bg-white text-center rounded-md bg-total-bg bg-cover">
+      <div className=" w-11/12 md:w-2/3 lg:w-4/12 px-5 py-8 bg-white text-center rounded-md bg-total-bg bg-cover">
         <h1 className="text-2xl font-bold mb-4">
           You scored {props.marks} out of {props.quizes.length}.
         </h1>
