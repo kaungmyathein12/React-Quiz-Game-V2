@@ -5,7 +5,12 @@ module.exports = {
     fontFamily: {
       poppins: ["Poppins"],
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "main-bg": "url('./src/img/bg.svg')",
+        "total-bg": "url('./src/img/total.svg')",
+      },
+    },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };

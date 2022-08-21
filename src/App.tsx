@@ -3,15 +3,15 @@ import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
 import CheckAnswer from "./components/CheckAnswer";
 import Quiz from "./components/Quiz";
+import Total from "./components/Total";
 
 const App: React.FC = () => {
-  const [btn, setBtn] = useState<string>("Check Answer");
   const [quizes, setQuizes] = useState([]);
   const [selectAns, setSelectAns] = useState<any>([]);
-  const [total, setTotal] = useState<number | null>(null);
+  const [total, setTotal] = useState<number>(0);
+  const [totalBox, setTotalBox] = useState<boolean>(false);
 
   const checkAnswer = () => {
-    setTotal(() => 0);
     let checkArrayAreEqual;
     const selectQuizIdList = selectAns.map(
       (selectAns: any) => selectAns.quizId
@@ -25,6 +25,7 @@ const App: React.FC = () => {
       checkArrayAreEqual = false;
     }
     if (checkArrayAreEqual) {
+      setTotal(() => 0);
       const correctAnswer = quizes.map((el: any) => el.correctAnswer);
       const selectedAns = selectAns.map((el: any) => el.ans);
       selectedAns.forEach((ans: any) => {
@@ -33,8 +34,8 @@ const App: React.FC = () => {
           setTotal((prevtotal: any) => prevtotal + 1);
         }
       });
+      setTotalBox(() => true);
     }
-    setBtn(() => "Restart Game");
   };
   const toggleActive = (quizId: number, ans: string) => {
     const hadObj = selectAns.find(
@@ -64,20 +65,21 @@ const App: React.FC = () => {
       console.log("Error", error);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);
   return (
-    <div id="App" className="font-poppins w-4/5 mx-auto py-5">
-      <h1 className="text-xl font-semibold mt-4 mb-10">React Quiz Game</h1>
-      <Quiz quizes={quizes} toggleActive={toggleActive} selectAns={selectAns} />
-      <CheckAnswer
-        btn={btn}
-        checkAns={checkAnswer}
-        marks={total}
-        quizesLength={quizes.length}
-      />
+    <div id="App" className="relative h-screen overflow-hidden">
+      {totalBox && <Total quizes={quizes} marks={total} />}
+      <div className="font-poppins w-4/5 mx-auto py-5 h-screen overflow-y-auto scrollbar-hide">
+        <h1 className="text-xl font-semibold mt-4 mb-10">React Quiz Game</h1>
+        <Quiz
+          quizes={quizes}
+          toggleActive={toggleActive}
+          selectAns={selectAns}
+        />
+        <CheckAnswer checkAns={checkAnswer} />
+      </div>
     </div>
   );
 };
